@@ -1,0 +1,16 @@
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  const errorEl = document.getElementById('error');
+  errorEl.textContent = '';
+
+  try {
+    const data = await apiRequest('/auth/login', { method: 'POST', body: { email, password } });
+    localStorage.setItem('cms_token', data.token);
+    localStorage.setItem('cms_user', JSON.stringify(data.user));
+    window.location.href = 'dashboard.html';
+  } catch (err) {
+    errorEl.textContent = err.message;
+  }
+});
